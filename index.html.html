@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Srushti Patole — QA Engineer & Developer</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap');
+
+:root{
+  --bg:#04040d;--bg2:#080818;--surface:#0e0e24;--border:#1a1a3a;
+  --cyan:#5ee7df;--violet:#9b72f7;--pink:#f472b6;--gold:#fbbf24;
+  --text:#e8e8ff;--muted:#6b6b9a;--radius:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;min-height:100vh;overflow-x:hidden;scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;cursor:none;}
+
+/* CURSOR */
+#cursor{position:fixed;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,background .2s;mix-blend-mode:screen;}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid var(--violet);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .18s cubic-bezier(.25,.46,.45,.94);opacity:.7;}
+@media(hover:none){#cursor,#cursor-ring{display:none;}body{cursor:auto;}a,button{cursor:pointer;}}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:10000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .8s,visibility .8s;}
+#loader.hide{opacity:0;visibility:hidden;pointer-events:none;}
+.loader-name{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,5vw,3rem);font-weight:800;background:linear-gradient(135deg,var(--cyan),var(--violet),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.loader-bar-wrap{width:200px;height:2px;background:var(--border);border-radius:2px;overflow:hidden;}
+.loader-bar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));width:0;animation:loadBar 1.8s ease forwards;}
+@keyframes loadBar{to{width:100%}}
+
+/* PARTICLES */
+#particles{position:fixed;inset:0;z-index:0;pointer-events:none;width:100%;height:100%;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;width:100%;z-index:100;padding:18px 0;transition:background .3s,border .3s;}
+nav.scrolled{background:rgba(4,4,13,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-inner{width:100%;max-width:1100px;margin:0 auto;padding:0 clamp(16px,5vw,60px);display:flex;justify-content:space-between;align-items:center;}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;background:linear-gradient(135deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;cursor:none;}
+.nav-links{display:flex;gap:24px;list-style:none;}
+.nav-links a{font-size:.75rem;letter-spacing:.12em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;cursor:none;padding:4px 0;}
+.nav-links a:hover{color:var(--cyan);}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.hamburger span{width:22px;height:2px;background:var(--cyan);border-radius:2px;transition:all .3s;}
+@media(max-width:640px){
+  .nav-links{display:none;position:fixed;top:60px;left:0;right:0;background:rgba(4,4,13,.97);flex-direction:column;padding:24px;gap:16px;border-bottom:1px solid var(--border);}
+  .nav-links.open{display:flex;}
+  .hamburger{display:flex;}
+}
+
+/* LAYOUT */
+section{position:relative;z-index:1;width:100%;}
+.container{width:100%;max-width:1100px;margin:0 auto;padding:0 clamp(16px,5vw,60px);}
+
+/* HERO */
+#hero{min-height:100vh;width:100%;display:flex;align-items:center;padding:100px 0 60px;}
+.hero-inner{display:grid;grid-template-columns:1fr auto;gap:60px;align-items:center;width:100%;}
+@media(max-width:768px){.hero-inner{grid-template-columns:1fr;gap:36px;}}
+.hero-tag{font-size:.7rem;letter-spacing:.22em;color:var(--cyan);text-transform:uppercase;margin-bottom:14px;opacity:0;animation:fadeUp .6s .3s forwards;}
+.hero-name{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,8vw,6rem);font-weight:800;line-height:1.02;margin-bottom:18px;opacity:0;animation:fadeUp .7s .5s forwards;}
+.shimmer-text{background:linear-gradient(90deg,var(--cyan) 0%,var(--violet) 35%,var(--pink) 65%,var(--cyan) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 4s linear infinite;}
+@keyframes shimmer{to{background-position:200% center}}
+.hero-role{font-size:clamp(.82rem,2vw,1rem);color:var(--muted);margin-bottom:32px;line-height:2;opacity:0;animation:fadeUp .7s .7s forwards;}
+.hero-role span{color:var(--violet);}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .9s forwards;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:40px;font-family:'DM Mono',monospace;font-size:.82rem;letter-spacing:.06em;cursor:none;transition:all .3s;text-decoration:none;border:none;outline:none;}
+.btn-primary{background:linear-gradient(135deg,var(--cyan),var(--violet));color:#000;font-weight:700;}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 35px rgba(94,231,223,.35);}
+.btn-outline{border:1.5px solid var(--border);color:var(--text);background:transparent;}
+.btn-outline:hover{border-color:var(--violet);color:var(--violet);transform:translateY(-3px);}
+@media(hover:none){.btn{cursor:pointer;}}
+
+/* AVATAR */
+.avatar-wrap{perspective:800px;opacity:0;animation:fadeIn .9s 1s forwards;flex-shrink:0;}
+.avatar-card{width:clamp(150px,20vw,200px);height:clamp(150px,20vw,200px);border-radius:50%;position:relative;transform-style:preserve-3d;animation:float3d 6s ease-in-out infinite;}
+@keyframes float3d{0%,100%{transform:rotateY(-8deg) rotateX(4deg) translateY(0);}50%{transform:rotateY(8deg) rotateX(-4deg) translateY(-12px);}}
+.avatar-inner{width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,var(--surface),var(--bg2));display:flex;align-items:center;justify-content:center;position:relative;overflow:visible;}
+.avatar-border{position:absolute;inset:-2px;border-radius:50%;padding:2px;background:conic-gradient(from 0deg,var(--cyan),var(--violet),var(--pink),var(--cyan));animation:spinBorder 4s linear infinite;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;}
+@keyframes spinBorder{to{transform:rotate(360deg)}}
+.avatar-initials{font-family:'Syne',sans-serif;font-size:clamp(2rem,6vw,3.5rem);font-weight:800;background:linear-gradient(135deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;z-index:1;}
+.ripple-rings{position:absolute;inset:0;pointer-events:none;}
+.ripple-rings span{position:absolute;inset:-20px;border-radius:50%;border:1px solid var(--cyan);opacity:0;animation:rippleOut 3s ease-out infinite;}
+.ripple-rings span:nth-child(2){animation-delay:1s;border-color:var(--violet);}
+.ripple-rings span:nth-child(3){animation-delay:2s;border-color:var(--pink);}
+@keyframes rippleOut{0%{transform:scale(1);opacity:.5}100%{transform:scale(1.6);opacity:0}}
+
+/* SECTION COMMON */
+.section-label{font-size:.68rem;letter-spacing:.25em;color:var(--cyan);text-transform:uppercase;margin-bottom:8px;}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:800;margin-bottom:48px;line-height:1.1;}
+.section-title .accent{color:transparent;-webkit-text-stroke:1.5px var(--violet);}
+
+/* ABOUT */
+#about{padding:100px 0;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;}
+@media(max-width:768px){.about-grid{grid-template-columns:1fr;gap:36px;}}
+.about-text p{color:var(--muted);line-height:1.95;font-size:.88rem;margin-bottom:16px;}
+.about-text p strong{color:var(--text);}
+.stat-row{display:flex;gap:28px;margin-top:28px;flex-wrap:wrap;}
+.stat-num{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;background:linear-gradient(135deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;}
+.stat-label{font-size:.7rem;color:var(--muted);letter-spacing:.1em;margin-top:2px;}
+.info-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;}
+.info-row{display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border);}
+.info-row:last-child{border-bottom:none;}
+.info-key{font-size:.72rem;letter-spacing:.08em;color:var(--cyan);min-width:75px;padding-top:2px;}
+.info-val{font-size:.82rem;color:var(--muted);line-height:1.5;}
+
+/* SKILLS */
+#skills{padding:100px 0;background:linear-gradient(180deg,transparent,var(--bg2) 30%,var(--bg2) 70%,transparent);}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;}
+.skill-group{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;}
+.skill-group-title{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:20px;}
+.skill-item{margin-bottom:15px;}
+.skill-name{font-size:.8rem;color:var(--text);display:flex;justify-content:space-between;margin-bottom:6px;}
+.skill-pct{color:var(--muted);font-size:.7rem;}
+.skill-track{height:4px;background:var(--border);border-radius:4px;overflow:hidden;}
+.skill-bar{height:100%;border-radius:4px;width:0;transition:width 1.2s cubic-bezier(.25,.46,.45,.94);}
+.bar-cyan{background:linear-gradient(90deg,var(--cyan),var(--violet));}
+.bar-violet{background:linear-gradient(90deg,var(--violet),var(--pink));}
+.bar-gold{background:linear-gradient(90deg,var(--gold),var(--pink));}
+
+/* MARQUEE */
+.marquee-wrap{overflow:hidden;margin:56px 0 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:13px 0;}
+.marquee-track{display:flex;gap:44px;animation:marqueeScroll 20s linear infinite;width:max-content;}
+.marquee-item{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap;display:flex;align-items:center;gap:10px;}
+.marquee-item::before{content:'◆';color:var(--cyan);font-size:.45rem;}
+@keyframes marqueeScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* EXPERIENCE */
+#experience{padding:100px 0;}
+.exp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:clamp(24px,4vw,36px);position:relative;overflow:hidden;}
+.exp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink));}
+.exp-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:6px;}
+.exp-role{font-family:'Syne',sans-serif;font-size:clamp(1rem,3vw,1.25rem);font-weight:700;}
+.exp-dates{font-size:.75rem;color:var(--cyan);background:rgba(94,231,223,.08);border:1px solid rgba(94,231,223,.2);padding:4px 12px;border-radius:20px;white-space:nowrap;}
+.exp-company{font-size:.85rem;color:var(--violet);margin-bottom:4px;}
+.exp-domain{font-size:.76rem;color:var(--muted);margin-bottom:22px;}
+.exp-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.exp-list li{font-size:.84rem;color:var(--muted);padding-left:22px;position:relative;line-height:1.75;}
+.exp-list li::before{content:'→';position:absolute;left:0;color:var(--cyan);}
+.exp-list li strong{color:var(--text);}
+.exp-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px;}
+.tag{font-size:.68rem;letter-spacing:.07em;padding:4px 10px;border-radius:20px;background:rgba(155,114,247,.1);border:1px solid rgba(155,114,247,.25);color:var(--violet);}
+
+/* PROJECTS */
+#projects{padding:100px 0;background:linear-gradient(180deg,transparent,var(--bg2) 20%,var(--bg2) 80%,transparent);}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;}
+.project-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:clamp(20px,3vw,28px);position:relative;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s;cursor:none;}
+.project-card::before{content:'';position:absolute;top:0;left:-100%;right:100%;height:3px;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink));transition:left .4s cubic-bezier(.25,.46,.45,.94),right .4s cubic-bezier(.25,.46,.45,.94);}
+.project-card:hover::before{left:0;right:0;}
+.project-card:hover{transform:translateY(-6px);border-color:var(--violet);box-shadow:0 20px 60px rgba(155,114,247,.15);}
+.project-num{font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;color:var(--border);position:absolute;top:14px;right:18px;line-height:1;pointer-events:none;}
+.project-type{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;}
+.project-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:12px;line-height:1.3;padding-right:50px;}
+.project-desc{font-size:.81rem;color:var(--muted);line-height:1.75;margin-bottom:18px;}
+.project-tech{display:flex;gap:6px;flex-wrap:wrap;}
+.tech-chip{font-size:.66rem;padding:3px 8px;border-radius:12px;background:rgba(94,231,223,.07);border:1px solid rgba(94,231,223,.2);color:var(--cyan);}
+@media(hover:none){.project-card{cursor:pointer;}}
+
+/* EDUCATION */
+#education{padding:100px 0;}
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:640px){.edu-grid{grid-template-columns:1fr;}}
+.edu-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;position:relative;overflow:hidden;}
+.edu-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--violet),var(--pink));}
+.edu-degree{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:6px;line-height:1.4;}
+.edu-school{font-size:.8rem;color:var(--cyan);margin-bottom:4px;}
+.edu-meta{font-size:.76rem;color:var(--muted);}
+.edu-score{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-top:14px;}
+.achievements-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:48px;}
+.ach-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 20px 20px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s;}
+.ach-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink));}
+.ach-card:hover{transform:translateY(-4px);border-color:var(--violet);box-shadow:0 14px 40px rgba(155,114,247,.15);}
+.ach-top{display:flex;align-items:center;gap:10px;}
+.ach-icon{font-size:1.5rem;flex-shrink:0;}
+.ach-label{font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);}
+.ach-text{font-size:.86rem;color:var(--text);line-height:1.45;font-family:'Syne',sans-serif;font-weight:600;}
+.ach-desc{font-size:.79rem;color:#8888bb;line-height:1.7;margin-top:8px;border-top:1px solid var(--border);padding-top:10px;}
+
+/* CONTACT */
+#contact{padding:130px 0;text-align:center;position:relative;}
+.contact-ripple-wrap{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.contact-ripple{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:300px;height:300px;border-radius:50%;border:1px solid rgba(94,231,223,.12);animation:contactPulse 4s ease-out infinite;}
+.contact-ripple:nth-child(2){animation-delay:1.3s;border-color:rgba(155,114,247,.1);}
+.contact-ripple:nth-child(3){animation-delay:2.6s;border-color:rgba(244,114,182,.08);}
+@keyframes contactPulse{0%{transform:translate(-50%,-50%) scale(.5);opacity:1}100%{transform:translate(-50%,-50%) scale(3);opacity:0}}
+.contact-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,4rem);font-weight:800;margin-bottom:16px;position:relative;}
+.contact-sub{color:var(--muted);font-size:.88rem;margin-bottom:40px;line-height:1.8;position:relative;}
+.contact-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;}
+.contact-link{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:40px;font-size:.8rem;font-family:'DM Mono',monospace;letter-spacing:.06em;text-decoration:none;transition:all .3s;cursor:none;}
+.contact-link.email-btn{background:linear-gradient(135deg,var(--cyan),var(--violet));color:#000;font-weight:700;}
+.contact-link.email-btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(94,231,223,.3);}
+.contact-link.outline-btn{border:1.5px solid var(--border);color:var(--text);}
+.contact-link.outline-btn:hover{border-color:var(--violet);color:var(--violet);transform:translateY(-3px);}
+@media(hover:none){.contact-link{cursor:pointer;}}
+
+/* FOOTER */
+footer{padding:28px 0;border-top:1px solid var(--border);text-align:center;}
+footer p{font-size:.73rem;color:var(--muted);}
+footer span{color:var(--cyan);}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease;}
+.reveal.from-left{transform:translateX(-36px);}
+.reveal.from-right{transform:translateX(36px);}
+.reveal.visible{opacity:1;transform:none;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Button reset - so buttons look like links/pills */
+button.btn, button.contact-link {
+  font-family:'DM Mono',monospace;
+  border:none;
+  outline:none;
+  cursor:none;
+}
+button.btn-primary { background:linear-gradient(135deg,var(--cyan),var(--violet));color:#000;font-weight:700; }
+button.btn-outline { border:1.5px solid var(--border)!important;color:var(--text)!important;background:transparent!important; }
+button.btn-outline:hover { border-color:var(--violet)!important;color:var(--violet)!important;transform:translateY(-3px); }
+button.email-btn { background:linear-gradient(135deg,var(--cyan),var(--violet));color:#000;font-weight:700; }
+button.outline-btn { border:1.5px solid var(--border)!important;color:var(--text)!important;background:transparent!important; }
+button.outline-btn:hover { border-color:var(--violet)!important;color:var(--violet)!important; }
+nav a { cursor:none; }
+@media(hover:none){ button.btn,button.contact-link,nav a { cursor:pointer; } }
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-name">Srushti Patole</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+</div>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="particles"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a onclick="goTo('hero')" class="nav-logo" style="cursor:none">SP.</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a onclick="scrollTo('about');closeMenu()">About</a></li>
+      <li><a onclick="goTo('experience');closeMenu()">Experience</a></li>
+      <li><a onclick="goTo('projects');closeMenu()">Projects</a></li>
+      <li><a onclick="goTo('skills');closeMenu()">Skills</a></li>
+      <li><a onclick="goTo('education');closeMenu()">Education</a></li>
+      <li><a onclick="goTo('contact');closeMenu()">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-tag">// Portfolio 2025</div>
+        <h1 class="hero-name"><span class="shimmer-text">Srushti<br>Patole</span></h1>
+        <p class="hero-role">
+          <span>QA Engineer</span> · Software Developer · <span>ML Enthusiast</span><br>
+          Python · Selenium · Machine Learning · AI Tools
+        </p>
+        <div class="hero-btns">
+          <button onclick="goTo('contact')" class="btn btn-primary">✉ Get In Touch</button>
+          <button onclick="goTo('projects')" class="btn btn-outline">↓ View Projects</button>
+        </div>
+      </div>
+      <div class="avatar-wrap">
+        <div class="avatar-card">
+          <div class="ripple-rings"><span></span><span></span><span></span></div>
+          <div class="avatar-inner">
+            <div class="avatar-border"></div>
+            <div class="avatar-initials">SP</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// 01 — About</div>
+      <h2 class="section-title">Who I <span class="accent">Am</span></h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal from-left">
+        <p>I'm a <strong>Computer Science (AIML) undergraduate</strong> with hands-on experience as a Software Automation Test Engineer. I bridge quality assurance and software development seamlessly.</p>
+        <p>During my internship at <strong>Compserv</strong>, I built Python-Selenium automation frameworks and an <strong>AI-powered ERP workflow agent</strong> that eliminated 10+ repetitive manual processes.</p>
+        <p>I'm also a <strong>professional anchor and emcee</strong> — hosting WordCamp Kolhapur 2026 and SAPTRANG 2K25, managing live audiences with confidence and energy.</p>
+        <div class="stat-row">
+          <div class="stat"><span class="stat-num">3+</span><div class="stat-label">Apps Tested</div></div>
+          <div class="stat"><span class="stat-num">2</span><div class="stat-label">ML Projects</div></div>
+          <div class="stat"><span class="stat-num">10+</span><div class="stat-label">Processes Automated</div></div>
+        </div>
+      </div>
+      <div class="reveal from-right">
+        <div class="info-card">
+          <div class="info-row"><span class="info-key">Role</span><span class="info-val">QA Engineer & Software Developer</span></div>
+          <div class="info-row"><span class="info-key">Degree</span><span class="info-val">B.Tech CSE (AIML) — 78.81%</span></div>
+          <div class="info-row"><span class="info-key">Email</span><span class="info-val">srushtip2311@gmail.com</span></div>
+          <div class="info-row"><span class="info-key">Mobile</span><span class="info-val">+91 8421434192</span></div>
+          <div class="info-row"><span class="info-key">LinkedIn</span><span class="info-val">linkedin.com/in/srushti-patole</span></div>
+          <div class="info-row"><span class="info-key">Interests</span><span class="info-val">ML · Automation · Public Speaking · Anchoring</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// 02 — Experience</div>
+      <h2 class="section-title">Where I've <span class="accent">Worked</span></h2>
+    </div>
+    <div class="exp-card reveal">
+      <div class="exp-header">
+        <div class="exp-role">Software Testing Intern</div>
+        <div class="exp-dates">Aug 2025 — Present</div>
+      </div>
+      <div class="exp-company">Compserv</div>
+      <div class="exp-domain">Domain: ERP &nbsp;·&nbsp; Projects: Bways ERP Solution · Bways Visitor App · Bways Mechanic App</div>
+      <ul class="exp-list">
+        <li>Analyzed requirements to identify and log defects early in the <strong>Software Testing Life Cycle (STLC)</strong>.</li>
+        <li>Designed and executed <strong>test cases and test scenarios</strong> from requirement documents and created structured test data.</li>
+        <li>Implemented <strong>Selenium WebDriver scripts in Python</strong>, improving coverage across 3 applications.</li>
+        <li>Built an <strong>AI-powered ERP workflow agent</strong> that eliminated 10+ repetitive manual processes.</li>
+        <li>Performed <strong>functional, regression, and cross-browser validation</strong> on Chrome, Safari, and Firefox.</li>
+        <li>Contributed to sprint planning, daily stand-ups, and retrospectives in an <strong>Agile Scrum</strong> environment.</li>
+        <li>Participated in release planning to proactively manage SDLC deliverables and project risks.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="tag">Python</span><span class="tag">Selenium WebDriver</span><span class="tag">JIRA</span>
+        <span class="tag">Agile / Scrum</span><span class="tag">STLC</span><span class="tag">AI Tools</span>
+        <span class="tag">Jenkins</span><span class="tag">Postman</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// 03 — Projects</div>
+      <h2 class="section-title">What I've <span class="accent">Built</span></h2>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-num">01</div>
+        <div class="project-type">Machine Learning</div>
+        <div class="project-name">Plant Disease Detection</div>
+        <p class="project-desc">Trained an ML image classification model on 3,000+ labeled leaf images. Applied preprocessing, augmentation, and cross-validation. Used AI-assisted tools to cut development time by ~40%. Deployed with a real-time prediction interface.</p>
+        <div class="project-tech"><span class="tech-chip">Python</span><span class="tech-chip">Scikit-learn</span><span class="tech-chip">ML</span><span class="tech-chip">AI Tools</span></div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-num">02</div>
+        <div class="project-type">Cybersecurity · ML</div>
+        <div class="project-name">Ransomware Detection System</div>
+        <p class="project-desc">Built a binary classification model to detect ransomware behavior in files and system processes. Engineered features from system-level data and streamlined evaluation using AI-assisted tools.</p>
+        <div class="project-tech"><span class="tech-chip">Python</span><span class="tech-chip">Scikit-learn</span><span class="tech-chip">Classification</span><span class="tech-chip">AI Tools</span></div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-num">03</div>
+        <div class="project-type">Web Development</div>
+        <div class="project-name">Spotify Clone</div>
+        <p class="project-desc">Developed a fully responsive music streaming web app replicating core Spotify features — playlist management, a media player, and dynamic UI interactions built with vanilla JS.</p>
+        <div class="project-tech"><span class="tech-chip">HTML5</span><span class="tech-chip">CSS3</span><span class="tech-chip">JavaScript</span><span class="tech-chip">Bootstrap</span></div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-num">04</div>
+        <div class="project-type">Web Development</div>
+        <div class="project-name">Daily Task Tracking System</div>
+        <p class="project-desc">Created a productivity web app for task creation, editing, and progress tracking. Built with vanilla JavaScript using dynamic DOM manipulation for real-time updates and a clean interface.</p>
+        <div class="project-tech"><span class="tech-chip">HTML5</span><span class="tech-chip">CSS3</span><span class="tech-chip">JavaScript</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// 04 — Skills</div>
+      <h2 class="section-title">What I <span class="accent">Know</span></h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Testing & QA</div>
+        <div class="skill-item"><div class="skill-name"><span>Selenium WebDriver</span><span class="skill-pct">90%</span></div><div class="skill-track"><div class="skill-bar bar-cyan" data-w="90"></div></div></div>
+        <div class="skill-item"><div class="skill-name"><span>Manual Testing</span><span class="skill-pct">88%</span></div><div class="skill-track"><div class="skill-bar bar-cyan" data-w="88"></div></div></div>
+        <div class="skill-item"><div class="skill-name"><span>Regression Testing</span><span class="skill-pct">85%</span></div><div class="skill-track"><div class="skill-bar bar-cyan" data-w="85"></div></div></div>
+        <div class="skill-item"><div class="skill-name"><span>JIRA / Defect Tracking</span><span class="skill-pct">82%</span></div><div class="skill-track"><div class="skill-bar bar-cyan" data-w="82"></div></div></div>
+        <div class="skill-item"><div class="skill-name"><span>Agile / STLC / SDLC</span><span class="skill-pct">85%</span></div><div class="skill-track"><div class="skill-bar bar-cyan" data-w="85"></div></div></div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Development</div>
+        <div class="skill-item"><div class="skill-name"><span>Python</span><span class="skill-pct">88%</span></div><div class="skill-track"><div class="skill-bar bar-violet" data-w="88"></div></div></div>
+        <div class="skill-item"><div class="skill-name"><span>JavaScript</span><span class="skill-pct">78%</span></div><div class="skill-track"><div class="skill-bar bar-violet" data-w="78"></div></div></div>
+        <div class="skill-item"><div class="skill-name"><span>Java with DSA</span><span class="skill-pct">72%</span></div><div class="skill-track"><div class="skill-bar bar-violet" data-w="72"></div></div></div>
+        <div class="skill-item"><div class="skill-name"><span>HTML5 / CSS3 / Bootstrap</span><span class="skill-pct">85%</span></div><div class="skill-track"><div class="skill-bar bar-violet" data-w="85"></div></div></div>
+        <div class="skill-item"><div class="skill-name"><span>MySQL / SQL</span><span class="skill-pct">78%</span></div><div class="skill-track"><div class="skill-bar bar-violet" data-w="78"></div></div></div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title">ML & AI Tools</div>
+        <div class="skill-item"><div class="skill-name"><span>Scikit-learn / ML</span><span class="skill-pct">75%</span></div><div class="skill-track"><div class="skill-bar bar-gold" data-w="75"></div></div></div>
+        <div class="skill-item"><div class="skill-name"><span>AI-assisted Development</span><span class="skill-pct">85%</span></div><div class="skill-track"><div class="skill-bar bar-gold" data-w="85"></div></div></div>
+        <div class="skill-item"><div class="skill-name"><span>Feature Engineering</span><span class="skill-pct">72%</span></div><div class="skill-track"><div class="skill-bar bar-gold" data-w="72"></div></div></div>
+        <div class="skill-item"><div class="skill-name"><span>Prompt Engineering</span><span class="skill-pct">80%</span></div><div class="skill-track"><div class="skill-bar bar-gold" data-w="80"></div></div></div>
+        <div class="skill-item"><div class="skill-name"><span>Hadoop / Hive</span><span class="skill-pct">60%</span></div><div class="skill-track"><div class="skill-bar bar-gold" data-w="60"></div></div></div>
+      </div>
+    </div>
+    <div class="marquee-wrap reveal">
+      <div class="marquee-track">
+        <div class="marquee-item">Compserv ERP</div><div class="marquee-item">Bways ERP Solution</div>
+        <div class="marquee-item">WordCamp Asia 2026</div><div class="marquee-item">WordCamp Kolhapur 2026</div>
+        <div class="marquee-item">D.Y. Patil University</div><div class="marquee-item">Khelo India Program</div>
+        <div class="marquee-item">SAPTRANG 2K25</div><div class="marquee-item">TechVerse ByteBattles</div>
+        <div class="marquee-item">Quantum 2K24</div>
+        <div class="marquee-item">Compserv ERP</div><div class="marquee-item">Bways ERP Solution</div>
+        <div class="marquee-item">WordCamp Asia 2026</div><div class="marquee-item">WordCamp Kolhapur 2026</div>
+        <div class="marquee-item">D.Y. Patil University</div><div class="marquee-item">Khelo India Program</div>
+        <div class="marquee-item">SAPTRANG 2K25</div><div class="marquee-item">TechVerse ByteBattles</div>
+        <div class="marquee-item">Quantum 2K24</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// 05 — Education</div>
+      <h2 class="section-title">Where I <span class="accent">Studied</span></h2>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card reveal from-left">
+        <div class="edu-degree">B.Tech — Computer Science & Engineering (AIML)</div>
+        <div class="edu-school">D.Y. Patil Agriculture and Technical University, Talsande</div>
+        <div class="edu-meta">2025 — Present</div>
+        <div class="edu-score">78.81%</div>
+      </div>
+      <div class="edu-card reveal from-right">
+        <div class="edu-degree">Diploma — Computer Science & Engineering (AIML)</div>
+        <div class="edu-school">D.Y. Patil Polytechnic, Kasaba Bawda, Kolhapur</div>
+        <div class="edu-meta">Completed 2023</div>
+        <div class="edu-score">66.6%</div>
+      </div>
+    </div>
+        <div class="achievements-grid reveal">
+
+      <div class="ach-card">
+        <div class="ach-top"><span class="ach-icon">🏆</span><span class="ach-label">Sports Achievement</span></div>
+        <div class="ach-text">Winner — Football, SAPTRANG 2K25</div>
+        <div class="ach-desc">Secured first place in the inter-college Football tournament at SAPTRANG 2K25 — the annual cultural and sports fest at D.Y. Patil Agriculture &amp; Technical University, competing against multiple college teams.</div>
+      </div>
+
+      <div class="ach-card">
+        <div class="ach-top"><span class="ach-icon">🎤</span><span class="ach-label">Professional Anchoring</span></div>
+        <div class="ach-text">Anchor &amp; Emcee — WordCamp Kolhapur 2026</div>
+        <div class="ach-desc">Served as the official anchor and emcee at WordCamp Kolhapur 2026, a prestigious WordPress community event. Hosted full-day sessions, managed stage transitions, and engaged a large live audience with confidence and energy.</div>
+      </div>
+
+      <div class="ach-card">
+        <div class="ach-top"><span class="ach-icon">🎤</span><span class="ach-label">Professional Anchoring</span></div>
+        <div class="ach-text">Anchor &amp; Emcee — SAPTRANG 2K25 Cultural Fest</div>
+        <div class="ach-desc">Hosted the SAPTRANG 2K25 Cultural Fest as lead emcee — coordinating performances, live announcements, and crowd engagement across a full-day college event attended by hundreds of students and faculty.</div>
+      </div>
+
+      <div class="ach-card">
+        <div class="ach-top"><span class="ach-icon">🌐</span><span class="ach-label">Global Tech Community</span></div>
+        <div class="ach-text">Attendee — WordCamp Asia 2026, Mumbai</div>
+        <div class="ach-desc">Attended WordCamp Asia 2026 in Mumbai — one of the largest WordPress community conferences in Asia. Gained exposure to global web trends, open-source practices, and connected with developers from across the continent.</div>
+      </div>
+
+      <div class="ach-card">
+        <div class="ach-top"><span class="ach-icon">🌐</span><span class="ach-label">Tech Community</span></div>
+        <div class="ach-text">Attendee — WordCamp Kolhapur 2025</div>
+        <div class="ach-desc">Participated in WordCamp Kolhapur 2025, attending hands-on workshops on building websites with WordPress. Expanded knowledge of CMS technologies and connected with the local developer community.</div>
+      </div>
+
+      <div class="ach-card">
+        <div class="ach-top"><span class="ach-icon">🥋</span><span class="ach-label">National Level</span></div>
+        <div class="ach-text">Karate Championship — Khelo India, Uttar Pradesh</div>
+        <div class="ach-desc">Selected to represent in the National-level Karate Championship by the Okinawa Goju-Ryu Karate Association under the Government of India's Khelo India initiative, competing at the national stage in Uttar Pradesh.</div>
+      </div>
+
+      <div class="ach-card">
+        <div class="ach-top"><span class="ach-icon">⚽</span><span class="ach-label">State Level Sports</span></div>
+        <div class="ach-text">State Level Football Representative</div>
+        <div class="ach-desc">Represented college at State Level Football Competitions, showcasing teamwork, athletic discipline, and competitive spirit at an inter-institutional level against teams from across the state.</div>
+      </div>
+
+      <div class="ach-card">
+        <div class="ach-top"><span class="ach-icon">💻</span><span class="ach-label">Tech Events</span></div>
+        <div class="ach-text">TechVerse ByteBattles &amp; Quantum 2K24</div>
+        <div class="ach-desc">Participated in TechVerse (ByteBattles) at D.Y. Patil Agriculture &amp; Technical University and Quantum 2K24 Mocha Placement Event — tackling technical challenges and engaging with industry professionals.</div>
+      </div>
+
+    </div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-ripple-wrap">
+    <div class="contact-ripple"></div><div class="contact-ripple"></div><div class="contact-ripple"></div>
+  </div>
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// 06 — Contact</div>
+      <h2 class="contact-title"><span class="shimmer-text">Let's Connect</span></h2>
+      <p class="contact-sub">Open to QA engineering, software development, and ML opportunities.<br>Also available for anchoring and emceeing events.</p>
+      <div class="contact-links">
+        <button onclick="showContact('email')" class="contact-link email-btn">✉ Email Me</button>
+        <button onclick="showContact('linkedin')" class="contact-link outline-btn">↗ LinkedIn</button>
+        <button onclick="showContact('phone')" class="contact-link outline-btn">📞 +91 8421434192</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>Built with passion &nbsp;·&nbsp; <span>Srushti Patole</span> &nbsp;·&nbsp; 2025</p>
+  </div>
+</footer>
+
+<script>
+// LOADER
+window.addEventListener('load',()=>{setTimeout(()=>document.getElementById('loader').classList.add('hide'),1900);});
+
+// CURSOR (desktop only)
+if(window.matchMedia('(hover:hover)').matches){
+  const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  setInterval(()=>{rx+=(mx-rx)*.15;ry+=(my-ry)*.15;ring.style.left=rx+'px';ring.style.top=ry+'px';},16);
+  document.querySelectorAll('a,.btn,.project-card,.contact-link').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2.2)';ring.style.transform='translate(-50%,-50%) scale(1.5)';ring.style.borderColor='var(--cyan)';});
+    el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';ring.style.transform='translate(-50%,-50%) scale(1)';ring.style.borderColor='var(--violet)';});
+  });
+}
+
+// PARTICLES
+const canvas=document.getElementById('particles');
+const ctx=canvas.getContext('2d');
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+const pts=Array.from({length:85},()=>({
+  x:Math.random()*canvas.width,y:Math.random()*canvas.height,
+  vx:(Math.random()-.5)*.38,vy:(Math.random()-.5)*.38,
+  r:Math.random()*1.4+.4
+}));
+function drawParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pts.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>canvas.width)p.vx*=-1;
+    if(p.y<0||p.y>canvas.height)p.vy*=-1;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(94,231,223,.45)';ctx.fill();
+  });
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<120){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(155,114,247,${.18*(1-d/120)})`;ctx.lineWidth=.55;ctx.stroke();}
+  }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+// NAV SCROLL
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>50));
+
+// goTo function handles all internal navigation
+function goTo(id){
+  const el=document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// HAMBURGER MENU
+function toggleMenu(){
+  const nl=document.getElementById('navLinks');
+  nl.classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('navLinks').classList.remove('open');
+}
+
+// SCROLL REVEAL
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+// SKILL BARS - animate on scroll into view
+const barObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting)e.target.querySelectorAll('.skill-bar').forEach(b=>{b.style.width=b.dataset.w+'%';});
+  });
+},{threshold:.25});
+document.querySelectorAll('.skill-group').forEach(g=>barObs.observe(g));
+
+// Contact Modal
+const contactData = {
+  email: { icon:'✉', title:'Email Address', value:'srushtip2311@gmail.com' },
+  linkedin: { icon:'💼', title:'LinkedIn Profile', value:'linkedin.com/in/srushti-patole' },
+  phone: { icon:'📞', title:'Phone Number', value:'+91 8421434192' }
+};
+let currentVal = '';
+function showContact(type){
+  const d = contactData[type];
+  currentVal = d.value;
+  document.getElementById('modalIcon').textContent = d.icon;
+  document.getElementById('modalTitle').textContent = d.title;
+  document.getElementById('modalValue').textContent = d.value;
+  document.getElementById('copiedMsg').style.display='none';
+  document.getElementById('copyBtn').textContent='📋 Copy to Clipboard';
+  const m = document.getElementById('contactModal');
+  m.style.display='flex';
+  setTimeout(()=>m.style.opacity=1,10);
+}
+function closeModal(){
+  document.getElementById('contactModal').style.display='none';
+}
+function copyContact(){
+  navigator.clipboard.writeText(currentVal).then(()=>{
+    document.getElementById('copiedMsg').style.display='block';
+    document.getElementById('copyBtn').textContent='✓ Copied!';
+    setTimeout(()=>{
+      document.getElementById('copiedMsg').style.display='none';
+      document.getElementById('copyBtn').textContent='📋 Copy to Clipboard';
+    },2500);
+  }).catch(()=>{
+    // fallback
+    const ta=document.createElement('textarea');
+    ta.value=currentVal;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+    document.getElementById('copiedMsg').style.display='block';
+    document.getElementById('copyBtn').textContent='✓ Copied!';
+  });
+}
+</script>
+
+<!-- Contact Modal -->
+<div id="contactModal" onclick="closeModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:20000;align-items:center;justify-content:center;backdrop-filter:blur(8px);">
+  <div onclick="event.stopPropagation()" style="background:#0e0e24;border:1px solid #1a1a3a;border-radius:20px;padding:36px;max-width:380px;width:90%;text-align:center;position:relative;box-shadow:0 30px 80px rgba(94,231,223,.15);">
+    <div id="modalIcon" style="font-size:2.5rem;margin-bottom:12px;"></div>
+    <div id="modalTitle" style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:#e8e8ff;margin-bottom:8px;"></div>
+    <div id="modalValue" style="font-size:.85rem;color:#6b6b9a;margin-bottom:24px;word-break:break-all;line-height:1.6;"></div>
+    <button id="copyBtn" onclick="copyContact()" style="background:linear-gradient(135deg,#5ee7df,#9b72f7);color:#000;font-weight:700;font-family:'DM Mono',monospace;font-size:.82rem;padding:12px 28px;border-radius:40px;border:none;cursor:pointer;width:100%;transition:transform .2s;">
+      📋 Copy to Clipboard
+    </button>
+    <div id="copiedMsg" style="display:none;color:#5ee7df;font-size:.78rem;margin-top:12px;font-family:'DM Mono',monospace;">✓ Copied!</div>
+    <button onclick="closeModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#6b6b9a;font-size:1.4rem;cursor:pointer;line-height:1;">×</button>
+  </div>
+</div>
+</body>
+</html>
